@@ -16,10 +16,12 @@ const authConfig = {
     },
     async signIn({ user, account, profile }) {
       try {
-        const existingGuest = await getGuest(user.eamil);
+        const existingGuest = await getGuest(user.email);
 
-        if (!existingGuest)
+        if (!existingGuest) {
           await createGuest({ email: user.email, fullName: user.name });
+          console.log(`no existing guset`);
+        }
 
         return true;
       } catch {
@@ -28,7 +30,6 @@ const authConfig = {
     },
     async session({ session, user }) {
       const guest = await getGuest(session.user.email);
-
       session.user.guestId = guest.id;
     },
   },
@@ -43,5 +44,3 @@ export const {
   signOut,
   handlers: { GET, POST },
 } = NextAuth(authConfig);
-
-// console.log(NextAuth(authConfig));

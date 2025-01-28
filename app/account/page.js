@@ -1,12 +1,13 @@
 import { auth } from "../_lib/auth";
+import { getGuest } from "../_lib/data-service";
 
 export const metadata = {
   title: "Guest Area",
 };
 
 export default async function Page() {
+  const guest = await getGuest("ebubenwanze@gmail.com");
   const session = await auth();
-  console.log(session);
 
   const firstName = session.user.name.split(" ").at(0);
   return (
